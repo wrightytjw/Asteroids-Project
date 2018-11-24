@@ -3,13 +3,11 @@
 
 // Declaring particle object function
 function Particle(pos) {
-
   // Copying position vector
   this.pos = pos.copy();
-
   // Generating random velocity vector
   this.vel = p5.Vector.random2D().mult(random());
-
+  
   // Moves the particle
   this.update = function() {
     this.pos.add(this.vel);

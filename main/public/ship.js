@@ -3,7 +3,6 @@
 
 // Declaring ship object function
 function Ship() {
-
   // Creating position vector in centre of canvas
   this.pos = createVector(width / 2, height / 2);
   // Creating velocity vector of zero speed

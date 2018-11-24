@@ -3,16 +3,13 @@
 
 // Declaring shot object function
 function Shot(pos, h) {
-
   // Copying position vector
   this.pos = pos.copy();
-
   // Generating velocity from ship's heading
   this.vel = p5.Vector.fromAngle(h).mult(10);
-
   // Setting removal state to false
   this.toRemove = false;
-
+  
   // Moving the shot
   this.update = function() {
     this.pos.add(this.vel);
