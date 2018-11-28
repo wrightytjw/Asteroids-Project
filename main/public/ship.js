@@ -1,49 +1,24 @@
-// Asteroids Ship Object File
-// Thomas J Wright
-
-// Declaring ship object function
 function Ship() {
-  // Creating position vector in centre of canvas
   this.pos = createVector(width / 2, height / 2);
-  // Creating velocity vector of zero speed
   this.vel = createVector(0, 0);
-  // Setting radius size
   this.r = width / 160;
-  // Setting heading to point straight up on start
   this.heading = TWO_PI;
-  // Setting rotation value to zero
   this.rotation = 0;
-  // Setting boosting state to false
   this.boosting = false;
-  // Creating empty shots array to store shots fired from this ship
   this.shots = [];
-  // Setting exploded state to false
   this.exploded = false;
-
-  // Shoot function fires shot from ship
   this.shoot = function() {
-    // Pushing a new shot object into the shots array
     this.shots.push(new Shot(this.pos, this.heading - PI / 2));
   }
-
-  // Update function moves the ship
   this.update = function() {
-    // Increasing the heading by the rotation value
     this.heading += this.rotation;
-    // Adding the velocity vector to the position vector
     this.pos.add(this.vel);
-    // Decreasing velocity to create deceleration
     this.vel.mult(0.99);
-    // Checking if ship boosting status is true
     if (this.boosting) {
-      // Calling boost function
       this.boost();
     }
   }
-
-  // Showshots function separates drawing of ship form drawing of shots
   this.showShots = function() {
-    // Iterating through shots array backwards
     for (var i = this.shots.length - 1; i >= 0; i--) {
       if (!this.shots[i].toRemove) {
         this.shots[i].update();
@@ -62,14 +37,11 @@ function Ship() {
             break;
           }
         }
-      }
-      else {
+      } else {
         this.shots.splice(i, 1);
       }
     }
   }
-
-  // Show function draws ship on the canvas
   this.show = function() {
     ship.showShots();
     if (!this.exploded) {
@@ -93,8 +65,6 @@ function Ship() {
       pop();
     }
   }
-
-  // Boost function moves ship forwards
   this.boost = function() {
     var force = p5.Vector.fromAngle(this.heading - PI / 2);
     force.div(10);
@@ -102,19 +72,14 @@ function Ship() {
       this.vel.add(force);
     }
   }
-
-  // Hits function checks for intersection with another object
   this.hits = function(a) {
     var d = p5.Vector.dist(this.pos, a.pos);
     if (d < this.r + a.r) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
-
-  // Checkedges function checks position against screen edges
   this.checkEdges = function() {
     if (this.pos.x > width + this.r) {
       this.pos.x = -this.r;
