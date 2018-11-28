@@ -8,7 +8,7 @@ function Ship() {
   // Creating velocity vector of zero speed
   this.vel = createVector(0, 0);
   // Setting radius size
-  this.r = width / 80;
+  this.r = width / 160;
   // Setting heading to point straight up on start
   this.heading = TWO_PI;
   // Setting rotation value to zero
@@ -86,9 +86,9 @@ function Ship() {
       vertex(this.r * 0.825, this.r * 1.474);
       endShape(CLOSE);
       if (this.boosting) {
-        //if (random() > 0.5) {
-        triangle(0, this.r * 1.75, -this.r * 0.25, this.r, this.r * 0.25, this.r);
-        //}
+        if (random() > 0.5) {
+          triangle(0, this.r * 1.75, -this.r * 0.25, this.r, this.r * 0.25, this.r);
+        }
       }
       pop();
     }
