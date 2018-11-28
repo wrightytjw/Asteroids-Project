@@ -1,21 +1,15 @@
 var socket = require('socket.io');
 var express = require('express');
-
 var app = express();
-
 var clients = [];
-
 app.use(express.static('public'));
-var server = app.listen(process.env.PORT, function() {
+var server = app.listen(3000, function() {
   console.log("Server is Running");
   setInterval(function() {
     io.emit("heartbeat", clients);
   }, 1000 / 60);
 });
-
-
 var io = socket(server);
-
 io.on("connection", function(socket) {
   console.log(socket.id + " has connected");
   socket.on("start", function(data) {

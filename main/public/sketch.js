@@ -1,8 +1,7 @@
 // Asteroids Main Sketch File
 // Thomas J Wright
-
 // Defining socket.io connection
-var socket = io.connect("https://real-asteroids-wrighty.c9users.io/");
+var socket = io.connect();
 // Declaring variable to store player ship object
 var ship;
 // Creating array to store other clients' ships
@@ -14,13 +13,11 @@ var asteroids = [];
 // Creating array to store explosion particles
 var particles = [];
 var myId;
-
 // Preload function runs before setup to load any external resources
 function preload() {
   // Loading font to display any text
   chakraPetch = loadFont("ChakraPetch-Regular.ttf");
 }
-
 // Setup function runs once at start of program
 function setup() {
   // Hiding mouse cursor
@@ -47,7 +44,6 @@ function setup() {
   // Generating asteroids
   createAsteroids();
 }
-
 // Creates asteroids at beginning of new level
 function createAsteroids() {
   // Constraining number of asteroids to maximum 16, depending on level
@@ -74,7 +70,6 @@ function showOtherShip(ship) {
   endShape(CLOSE);
   pop();
 }
-
 // Draw function called each frame
 function draw() {
   socket.on("id", function(data) {
@@ -153,7 +148,6 @@ function draw() {
   // Sending update message to server with ship's position data
   socket.emit("update", data);
 }
-
 // Explode function creates an explosion at position vector
 function explode(pos) {
   // Generating 7 particles
@@ -162,7 +156,6 @@ function explode(pos) {
     particles.push(new Particle(pos));
   }
 }
-
 // Keypressed function runs every time a key is pressed
 function keyPressed() {
   // If the up arrow is pressed
@@ -187,7 +180,6 @@ function keyPressed() {
   }
   // If a key is pressed when the ship has been exploded
 }
-
 // Keyreleased function runs whenever a key is released
 function keyReleased() {
   // If up arrow is pressed
