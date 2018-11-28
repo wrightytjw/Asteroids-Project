@@ -6,13 +6,7 @@ var asteroids = [];
 app.use(express.static("public"));
 var server = app.listen(3000, function() {
   console.log("Server is Running");
-  data = {
-    ships: clients,
-    asteroids: asteroids
-  };
-  setInterval(function() {
-    io.emit("heartbeat", data);
-  }, 1000 / 60);
+  generateAsteroids();
 });
 var io = socket(server);
 io.on("connection", function(socket) {
@@ -29,6 +23,11 @@ io.on("connection", function(socket) {
         clients.splice(clients.indexOf(c), 1, data);
       }
     }
+    data = {
+      ships: clients,
+      asteroids: asteroids
+    };
+    io.emit("heartbeat", data);
   });
   socket.on("disconnect", function() {
     for (c of clients) {
@@ -39,3 +38,8 @@ io.on("connection", function(socket) {
     console.log(socket.id + " has disconnected");
   });
 });
+
+function createAsteroids() {
+  var x = Math.random(width);
+  var y = Math.random(height);
+}
