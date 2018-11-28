@@ -1,8 +1,12 @@
-var socket = require('socket.io');
-var express = require('express');
+// Asteroids Online Project Server File
+// Thomas J Wright
+
+// Requiring socket.io package
+var socket = require("socket.io");
+var express = require("express");
 var app = express();
 var clients = [];
-app.use(express.static('public'));
+app.use(express.static("public"));
 var server = app.listen(3000, function() {
   console.log("Server is Running");
   setInterval(function() {

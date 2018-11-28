@@ -1,5 +1,6 @@
 // Asteroids Main Sketch File
 // Thomas J Wright
+
 // Defining socket.io connection
 var socket = io.connect();
 // Declaring variable to store player ship object
@@ -12,12 +13,15 @@ var score;
 var asteroids = [];
 // Creating array to store explosion particles
 var particles = [];
+// Variable to store the player's id on the server
 var myId;
+
 // Preload function runs before setup to load any external resources
 function preload() {
   // Loading font to display any text
   chakraPetch = loadFont("ChakraPetch-Regular.ttf");
 }
+
 // Setup function runs once at start of program
 function setup() {
   // Hiding mouse cursor
@@ -44,47 +48,65 @@ function setup() {
   // Generating asteroids
   createAsteroids();
 }
-// Creates asteroids at beginning of new level
-function createAsteroids() {
-  // Constraining number of asteroids to maximum 16, depending on level
-  var numAsteroids = constrain(2 ** level, 0, 16);
-  // Iterating to create ten asteroids
-  for (var i = 0; i < numAsteroids; i++) {
-    // Pushing a new asteroid object into the array
-    asteroids.push(new Asteroid());
-  }
-}
 
+// // Creates asteroids at beginning of new level
+// function createAsteroids() {
+//   // Constraining number of asteroids to maximum 16, depending on level
+//   var numAsteroids = constrain(2 ** level, 0, 16);
+//   // Iterating to create ten asteroids
+//   for (var i = 0; i < numAsteroids; i++) {
+//     // Pushing a new asteroid object into the array
+//     asteroids.push(new Asteroid());
+//   }
+// }
+
+// Draws ship from otherShips array to the canvas
 function showOtherShip(ship) {
+  // Push limits transformations to this object
   push();
+  // Setting stroke colour to white
   stroke(255);
+  // Setting fill colour to black
   fill(0);
+  // Translating to ship position
   translate(ship.x, ship.y);
+  // Rotating by ship heading
   rotate(ship.h);
+  // Starting shape generation
   beginShape();
+  // Defining shape vertices
   vertex(0, -ship.r);
   vertex(-ship.r * 0.825, ship.r * 1.474);
   vertex(-ship.r * 0.667, ship.r);
   vertex(ship.r * 0.667, ship.r);
   vertex(ship.r * 0.825, ship.r * 1.474);
+  // Closing shape
   endShape(CLOSE);
+  // Pop makes transformations global
   pop();
 }
+
 // Draw function called each frame
 function draw() {
+  // Receiving id from server
   socket.on("id", function(data) {
+    // Setting myId
     myId = data;
   });
   // Receiving heartbeat message
   socket.on("heartbeat", function(data) {
-    // Setting otherShips array equal to received data
-    otherShips = data;
+    // Setting otherShips array equal to received ships
+    otherShips = data.ships;
+    // Setting asteroids array equal to received asteroids
+    asteroids = data.asteroids;
   });
   // Setting background colour
   background(0);
   // Iterating through otherShips array
   for (o of otherShips) {
+    // Checking if other ship id is not the same as myId
     if (o.id != myId) {
+      // Showing the other ship on the canvas
       showOtherShip(o);
     }
   }
@@ -148,6 +170,7 @@ function draw() {
   // Sending update message to server with ship's position data
   socket.emit("update", data);
 }
+
 // Explode function creates an explosion at position vector
 function explode(pos) {
   // Generating 7 particles
@@ -156,6 +179,7 @@ function explode(pos) {
     particles.push(new Particle(pos));
   }
 }
+
 // Keypressed function runs every time a key is pressed
 function keyPressed() {
   // If the up arrow is pressed
@@ -180,6 +204,7 @@ function keyPressed() {
   }
   // If a key is pressed when the ship has been exploded
 }
+
 // Keyreleased function runs whenever a key is released
 function keyReleased() {
   // If up arrow is pressed
