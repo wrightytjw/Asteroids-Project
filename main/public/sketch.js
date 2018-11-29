@@ -24,7 +24,7 @@ function setup() {
   score = 0;
   level = 1;
   asteroids = [];
-  createAsteroids();
+  // createAsteroids();
 }
 
 function showOtherShip(ship) {
@@ -64,9 +64,17 @@ function draw() {
   }
   for (a of asteroids) {
     push();
+    stroke(255);
+    noFill();
+    translate(a.xFactor * width, a.yFactor * height)
     beginShape();
-    for (v of a.vertices) {
-      vertex(v.x, v.y);
+    for (o of a.offset) {
+      var offset = o * width;
+      var angle = map(a.offset.indexOf(o), 0, a.offset.length, 0, TWO_PI);
+      var r = a.rFactor * width + o;
+      var x = r * cos(angle);
+      var y = r * sin(angle);
+      vertex(x, y);
     }
     endShape(CLOSE);
     pop();
@@ -79,10 +87,10 @@ function draw() {
   textSize(width / 32);
   textFont(chakraPetch);
   text("Score: " + score.toString(), 0, width / 16);
-  if (asteroids.length == 0) {
-    level++;
-    createAsteroids();
-  }
+  // if (asteroids.length == 0) {
+  //   level++;
+  //   createAsteroids();
+  // }
   var data = {
     x: ship.pos.x,
     y: ship.pos.y,

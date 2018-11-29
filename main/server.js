@@ -1,6 +1,5 @@
 var socket = require("socket.io");
 var express = require("express");
-var p5 = require("p5");
 var app = express();
 var clients = [];
 var asteroids = [];
@@ -43,28 +42,24 @@ io.on("connection", function(socket) {
 });
 
 function createAsteroid() {
-  var pos = p5.Vector.random2D();
-  var r = 0.3;
-  var vel = p5.Vector.random2D();
-  var total = p5.random(5, 15);
+  var x = Math.random();
+  var y = Math.random();
+  var r = 0.07;
+  var xVel = Math.random();
+  var yVel = Math.random();
+  var total = Math.random() * 10 + 5;
   var offset = [];
-  var vertices = [];
   for (var i = 0; i < total; i++) {
-    var diff = p5.random(-r / 2, r / 2)
-  }
-  for (var i = 0; i < total; i++) {
-    var angle = p5.map(i, 1, total, 0, TWO_PI);
-    var r = r + offset[i];
-    var x = r * cos(angle);
-    var y = r * sin(angle);
-    var xy = p5.createVector(x, y);
-    vertices.push(xy);
+    var diff = r * (Math.random() * 2 - 1);
+    offset.push(diff);
   }
   var asteroid = {
-    posFactor: pos,
+    xFactor: x,
+    yFactor: y,
     rFactor: r,
-    velFactor: vel,
-    vertices: vertices
+    offset: offset,
+    xVel: xVel,
+    yVel: yVel
   };
   return asteroid;
 }
