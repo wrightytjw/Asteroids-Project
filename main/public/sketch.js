@@ -69,9 +69,10 @@ function draw() {
     translate(a.xFactor * width, a.yFactor * height)
     beginShape();
     for (o of a.offset) {
-      var offset = o * width;
       var angle = map(a.offset.indexOf(o), 0, a.offset.length, 0, TWO_PI);
-      var r = a.rFactor * width + o;
+      var r = a.rFactor * width;
+      var offset = r * o;
+      r += offset;
       var x = r * cos(angle);
       var y = r * sin(angle);
       vertex(x, y);
@@ -86,7 +87,7 @@ function draw() {
   fill(255);
   textSize(width / 32);
   textFont(chakraPetch);
-  text("Score: " + score.toString(), 0, width / 16);
+  text("Score: " + score.toString(), 0, 0, 100);
   // if (asteroids.length == 0) {
   //   level++;
   //   createAsteroids();
