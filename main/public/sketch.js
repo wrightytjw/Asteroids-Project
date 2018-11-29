@@ -24,7 +24,7 @@ function setup() {
   score = 0;
   level = 1;
   asteroids = [];
-  createAsteroids();
+  // createAsteroids();
 }
 
 function showOtherShip(ship) {
@@ -63,15 +63,22 @@ function draw() {
     ship.checkEdges();
   }
   for (a of asteroids) {
-    a.update();
-    a.show();
-    a.checkEdges();
-    if (!ship.exploded) {
-      if (ship.hits(a)) {
-        ship.exploded = true;
-        explode(ship.pos);
-      }
+    push();
+    stroke(255);
+    noFill();
+    translate(a.xFactor * width, a.yFactor * height)
+    beginShape();
+    for (o of a.offset) {
+      var angle = map(a.offset.indexOf(o), 0, a.offset.length, 0, TWO_PI);
+      var r = a.rFactor * width;
+      var offset = r * o;
+      r += offset;
+      var x = r * cos(angle);
+      var y = r * sin(angle);
+      vertex(x, y);
     }
+    endShape(CLOSE);
+    pop();
   }
   for (p of particles) {
     p.update();
@@ -80,11 +87,11 @@ function draw() {
   fill(255);
   textSize(width / 32);
   textFont(chakraPetch);
-  text("Score: " + score.toString(), 0, width / 16);
-  if (asteroids.length == 0) {
-    level++;
-    createAsteroids();
-  }
+  text("Score: " + score.toString(), 0, 0, 100);
+  // if (asteroids.length == 0) {
+  //   level++;
+  //   createAsteroids();
+  // }
   var data = {
     x: ship.pos.x,
     y: ship.pos.y,
