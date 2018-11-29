@@ -63,15 +63,13 @@ function draw() {
     ship.checkEdges();
   }
   for (a of asteroids) {
-    a.update();
-    a.show();
-    a.checkEdges();
-    if (!ship.exploded) {
-      if (ship.hits(a)) {
-        ship.exploded = true;
-        explode(ship.pos);
-      }
+    push();
+    beginShape();
+    for (v of a.vertices) {
+      vertex(v.x, v.y);
     }
+    endShape(CLOSE);
+    pop();
   }
   for (p of particles) {
     p.update();
