@@ -61,6 +61,7 @@ function draw() {
   }
   for (a of asteroids) {
     a.update();
+    a.checkEdges();
     a.show();
   }
   ship.show();

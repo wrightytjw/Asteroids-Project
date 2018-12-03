@@ -24,6 +24,9 @@ function createAsteroid() {
   var y = Math.random();
   var xVel = Math.random() * 2 - 1;
   var yVel = Math.random() * 2 - 1;
+  var velMag = Math.sqrt(xVel ** 2 + yVel ** 2);
+  xVel = xVel / velMag / 1000;
+  yVel = yVel / velMag / 1000;
   var r = 0.05;
   var offset = [];
   var total = Math.random() * 10 + 5;
@@ -44,10 +47,10 @@ var io = socket(server);
 // Clients connection
 io.on("connection", function(socket) {
   console.log(socket.id + " has connected");
-  socket.emit("asteroids", asteroids);
   // Client startup
   socket.on("start", function(data) {
     socket.emit("id", socket.id);
+    socket.emit("asteroids", asteroids);
     data.id = socket.id;
     clients.push(data);
   });
