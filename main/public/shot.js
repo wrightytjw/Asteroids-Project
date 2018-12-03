@@ -17,12 +17,12 @@ function Shot(pos, h) {
       this.toRemove = true;
     }
   }
-  this.hits = function(a) {
-    var d = p5.Vector.dist(this.pos, a.pos);
-    if (d < a.r) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // this.hits = function(a) {
+  //   var d = p5.Vector.dist(this.pos, a.pos);
+  //   if (d < a.r) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }

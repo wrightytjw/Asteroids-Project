@@ -23,22 +23,23 @@ function Ship() {
       if (!this.shots[i].toRemove) {
         this.shots[i].update();
         this.shots[i].show();
-        for (var j = asteroids.length - 1; j >= 0; j--) {
-          if (this.shots[i].hits(asteroids[j])) {
-            explode(this.shots[i].pos);
-            if (asteroids[j].r > 8) {
-              var newAsteroids = asteroids[j].breakup();
-              asteroids = asteroids.concat(newAsteroids);
-            }
-            var points = floor(map(asteroids[j].r, 8, 64, 10, 1));
-            asteroids.splice(j, 1);
-            this.shots.splice(i, 1);
-            score += points;
-            break;
-          }
-        }
-      } else {
-        this.shots.splice(i, 1);
+        // for (var j = asteroids.length - 1; j >= 0; j--) {
+        //   if (this.shots[i].hits(asteroids[j])) {
+        //     explode(this.shots[i].pos);
+        //     if (asteroids[j].r > 8) {
+        //       var newAsteroids = asteroids[j].breakup();
+        //       asteroids = asteroids.concat(newAsteroids);
+        //     }
+        //     var points = floor(map(asteroids[j].r, 8, 64, 10, 1));
+        //     asteroids.splice(j, 1);
+        //     this.shots.splice(i, 1);
+        //     score += points;
+        //     break;
+        //   }
+        // }
+        // } else {
+        // this.shots.splice(i, 1);
+        // }
       }
     }
   }

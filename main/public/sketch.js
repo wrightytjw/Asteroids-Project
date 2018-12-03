@@ -22,9 +22,6 @@ function setup() {
   };
   socket.emit("start", data);
   score = 0;
-  level = 1;
-  asteroids = [];
-  // createAsteroids();
 }
 
 function showOtherShip(ship) {
@@ -47,9 +44,14 @@ function draw() {
   socket.on("id", function(data) {
     myId = data;
   });
+  socket.on("asteroids", function(data) {
+    asteroids = [];
+    for (a of data) {
+      asteroids.push(new Asteroid(a));
+    }
+  })
   socket.on("heartbeat", function(data) {
-    otherShips = data.ships;
-    asteroids = data.asteroids;
+    otherShips = data;
   });
   background(0);
   for (o of otherShips) {
@@ -57,28 +59,14 @@ function draw() {
       showOtherShip(o);
     }
   }
+  for (a of asteroids) {
+    a.update();
+    a.show();
+  }
   ship.show();
   if (!ship.exploded) {
     ship.update();
     ship.checkEdges();
-  }
-  for (a of asteroids) {
-    push();
-    stroke(255);
-    noFill();
-    translate(a.xFactor * width, a.yFactor * height)
-    beginShape();
-    for (o of a.offset) {
-      var angle = map(a.offset.indexOf(o), 0, a.offset.length, 0, TWO_PI);
-      var r = a.rFactor * width;
-      var offset = r * o;
-      r += offset;
-      var x = r * cos(angle);
-      var y = r * sin(angle);
-      vertex(x, y);
-    }
-    endShape(CLOSE);
-    pop();
   }
   for (p of particles) {
     p.update();
@@ -88,10 +76,6 @@ function draw() {
   textSize(width / 32);
   textFont(chakraPetch);
   text("Score: " + score.toString(), 0, 0, 100);
-  // if (asteroids.length == 0) {
-  //   level++;
-  //   createAsteroids();
-  // }
   var data = {
     x: ship.pos.x,
     y: ship.pos.y,
