@@ -47,7 +47,7 @@ function Ship() {
     ship.showShots();
     if (!this.exploded) {
       push();
-      stroke(255);
+      stroke(255, 255, 255);
       fill(0);
       translate(this.pos.x, this.pos.y);
       rotate(this.heading);

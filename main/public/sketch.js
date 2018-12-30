@@ -12,7 +12,7 @@ function preload() {
 
 function setup() {
   noCursor();
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(1200, 700);
   ship = new Ship();
   var data = {
     x: ship.pos.x,
@@ -26,8 +26,8 @@ function setup() {
 
 function showOtherShip(ship) {
   push();
-  stroke(255);
-  fill(0);
+  stroke(255, 0, 0);
+  fill(0, 0, 0);
   translate(ship.x, ship.y);
   rotate(ship.h);
   beginShape();
@@ -53,7 +53,7 @@ function draw() {
   socket.on("heartbeat", function(data) {
     otherShips = data;
   });
-  background(0);
+  background(0, 0, 0);
   for (o of otherShips) {
     if (o.id != myId) {
       showOtherShip(o);

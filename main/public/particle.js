@@ -8,7 +8,7 @@ function Particle(pos) {
   this.show = function() {
     if (this.vel.mag() > 0.25) {
       push();
-      stroke(255);
+      stroke(255, 255, 255);
       strokeWeight(1);
       point(this.pos.x, this.pos.y);
       pop();

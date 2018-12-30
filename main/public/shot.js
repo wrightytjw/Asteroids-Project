@@ -7,7 +7,7 @@ function Shot(pos, h) {
   }
   this.show = function() {
     push();
-    stroke(255);
+    stroke(255, 255, 255);
     strokeWeight(2);
     point(this.pos.x, this.pos.y);
     pop();
