@@ -61,13 +61,11 @@ function draw() {
   }
   for (a of asteroids) {
     a.update();
-    a.checkEdges();
     a.show();
   }
   ship.show();
   if (!ship.exploded) {
     ship.update();
-    ship.checkEdges();
   }
   for (p of particles) {
     p.update();
@@ -90,6 +88,20 @@ function explode(pos) {
   for (var i = 0; i < 7; i++) {
     particles.push(new Particle(pos));
   }
+}
+
+function checkEdges(x, y, r, w, h) {
+  if (x > width + r) {
+    x = -r;
+  } else if (x < -r) {
+    x = width + r;
+  }
+  if (y > h + r) {
+    y = -r;
+  } else if (y < -r) {
+    y = h + r;
+  }
+  return [x, y];
 }
 
 function keyPressed() {

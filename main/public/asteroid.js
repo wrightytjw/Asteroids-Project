@@ -1,11 +1,23 @@
-function Asteroid(serverAsteroid) {
-  this.pos = createVector(serverAsteroid.x, serverAsteroid.y);
-  this.vel = createVector(serverAsteroid.xVel, serverAsteroid.yVel);
-  this.r = serverAsteroid.r;
-  this.offset = serverAsteroid.offset;
+function Asteroid(asteroid) {
+  this.pos = createVector(asteroid.x, asteroid.y);
+  this.r = asteroid.r;
+  this.vel = createVector(asteroid.xVel, asteroid.yVel);
+  this.offset = asteroid.offset;
+  this.asteroidData = {
+    x: this.pos.x,
+    y: this.pos.y,
+    r: this.r / 2
+  };
 
   this.update = function() {
+    this.pos.x = checkEdges(this.pos.x, this.pos.y, this.r, width, height)[0];
+    this.pos.y = checkEdges(this.pos.x, this.pos.y, this.r, width, height)[1];
     this.pos.add(this.vel);
+    this.asteroidData = {
+      x: this.pos.x,
+      y: this.pos.y,
+      r: this.r / 2
+    };
   }
 
   this.show = function() {
@@ -23,20 +35,5 @@ function Asteroid(serverAsteroid) {
     }
     endShape(CLOSE);
     pop();
-  }
-
-  this.checkEdges = function() {
-    if (this.pos.x < -this.r) {
-      this.pos.x = width + this.r;
-    }
-    if (this.pos.x > width + this.r) {
-      this.pos.x = -this.r;
-    }
-    if (this.pos.y < -this.r) {
-      this.pos.y = height + this.r;
-    }
-    if (this.pos.y > height + this.r) {
-      this.pos.y = -this.r;
-    }
   }
 }

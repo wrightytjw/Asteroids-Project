@@ -7,42 +7,45 @@ function Ship() {
   this.boosting = false;
   this.shots = [];
   this.exploded = false;
+
   this.shoot = function() {
     this.shots.push(new Shot(this.pos, this.heading - PI / 2));
   }
+
   this.update = function() {
     this.heading += this.rotation;
+    this.pos.x = checkEdges(this.pos.x, this.pos.y, this.r, width, height)[0];
+    this.pos.y = checkEdges(this.pos.x, this.pos.y, this.r, width, height)[1];
     this.pos.add(this.vel);
     this.vel.mult(0.99);
     if (this.boosting) {
       this.boost();
     }
   }
+
   this.showShots = function() {
     for (var i = this.shots.length - 1; i >= 0; i--) {
       if (!this.shots[i].toRemove) {
         this.shots[i].update();
         this.shots[i].show();
-        // for (var j = asteroids.length - 1; j >= 0; j--) {
-        //   if (this.shots[i].hits(asteroids[j])) {
-        //     explode(this.shots[i].pos);
-        //     if (asteroids[j].r > 8) {
-        //       var newAsteroids = asteroids[j].breakup();
-        //       asteroids = asteroids.concat(newAsteroids);
-        //     }
-        //     var points = floor(map(asteroids[j].r, 8, 64, 10, 1));
-        //     asteroids.splice(j, 1);
-        //     this.shots.splice(i, 1);
-        //     score += points;
-        //     break;
-        //   }
-        // }
-        // } else {
-        // this.shots.splice(i, 1);
-        // }
+        this.shots[i].checkEdges();
+        for (var j = asteroids.length - 1; j >= 0; j--) {
+          if (this.shots[i].hits(asteroids[j])) {
+            explode(this.shots[i].pos);
+            this.shots.splice(i, 1);
+            var points = floor(map(asteroids[j].r, 8, 64, 10, 1));
+            score += points;
+            socket.emit("asteroids", j);
+            break;
+          }
+        }
+      } else {
+        this.shots.splice(i, 1);
       }
     }
   }
+
+
   this.show = function() {
     ship.showShots();
     if (!this.exploded) {
@@ -66,6 +69,7 @@ function Ship() {
       pop();
     }
   }
+
   this.boost = function() {
     var force = p5.Vector.fromAngle(this.heading - PI / 2);
     force.div(10);
@@ -73,26 +77,13 @@ function Ship() {
       this.vel.add(force);
     }
   }
+
   this.hits = function(a) {
     var d = p5.Vector.dist(this.pos, a.pos);
     if (d < this.r + a.r) {
       return true;
     } else {
       return false;
-    }
-  }
-  this.checkEdges = function() {
-    if (this.pos.x > width + this.r) {
-      this.pos.x = -this.r;
-    }
-    if (this.pos.x < -this.r) {
-      this.pos.x = width + this.r;
-    }
-    if (this.pos.y > height + this.r) {
-      this.pos.y = -this.r;
-    }
-    if (this.pos.y < -this.r) {
-      this.pos.y = height + this.r;
     }
   }
 }
